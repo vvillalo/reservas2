@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Cancha Old Trafford Admin</title>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+<div class="header">
+	<input type="text" id="searchKey"/>
+	<button id="btnSearch">Buscar reserva</button>
+	<button id="btnAdd">Nueva reserva</button>
+</div>
+
+
+<div class="leftArea">
+<ul id="reservationList"></ul>
+</div>
+
+<form id="reservationForm">
+	
+<div class="mainArea">
+
+<label>Id:</label>
+<input id="reservationId" name="id" type="text" disabled />
+
+<label>Nombre:</label>
+<input type="text" id="name" name="name" required>
+
+<label>Hora:</label>
+<input type="text" id="hour" name="grapes"/>
+
+<label>Día:</label>
+<input type="text" id="day" name="country"/>
+
+<label>Mes:</label>
+<input type="text" id="month" name="region"/>
+
+<label>Año:</label>
+<input type="text" id="year" name="year"/>
+
+<button id="btnSave">Guardar reserva</button>
+<button id="btnDelete">Cancelar reserva</button>
+
+</div>
+
+<div class="rightArea">
+
+<label>Observaciones:</label>
+<textarea id="description" name="description"></textarea>
+</div>
+
+</form>
+
+<script src="js/jquery-1.7.1.min.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

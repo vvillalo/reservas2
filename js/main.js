@@ -1,4 +1,4 @@
-var rootURL = "http://localhost/reservas/api/reservations";
+var rootURL = "http://solweb.co/reservas/api/reservations";
 
 var currentReservation;
 

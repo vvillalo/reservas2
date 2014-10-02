@@ -44,7 +44,7 @@ function getReservation($id) {
 function addReservation() {
 	$request = Slim::getInstance()->request();
 	$reservation = json_decode($request->getBody());
-	$sql = "INSERT INTO reservation (name, hour, day, month, year, description) VALUES (:name, :hour, :day, :month, :year, :description)";
+	$sql = "INSERT INTO reservation (name, hour, day, month, year, description, idField, idLogin) VALUES (:name, :hour, :day, :month, :year, :description, :idField, :idLogin)";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
@@ -54,6 +54,8 @@ function addReservation() {
 		$stmt->bindParam("month", $reservation->month);
 		$stmt->bindParam("year", $reservation->year);
 		$stmt->bindParam("description", $reservation->description);
+                $stmt->bindParam("idField", $reservation->idField);
+		$stmt->bindParam("idLogin", $reservation->idLogin);
 		$stmt->execute();
 		$reservation->id = $db->lastInsertId();
 		$db = null;
@@ -68,7 +70,7 @@ function updateReservation($id) {
 	$request = Slim::getInstance()->request();
 	$body = $request->getBody();
 	$reservation = json_decode($body);
-	$sql = "UPDATE reservation SET name=:name, hour=:hour, day=:day, month=:month, year=:year, description=:description WHERE id=:id";
+	$sql = "UPDATE reservation SET name=:name, hour=:hour, day=:day, month=:month, year=:year, description=:description, idField=:idField, idLogin=:idLogin WHERE id=:id";
 	try {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
@@ -78,6 +80,8 @@ function updateReservation($id) {
 		$stmt->bindParam("month", $reservation->month);
 		$stmt->bindParam("year", $reservation->year);
 		$stmt->bindParam("description", $reservation->description);
+                $stmt->bindParam("idField", $reservation->idField);
+		$stmt->bindParam("idLogin", $reservation->idLogin);
 		$stmt->bindParam("id", $id);
 		$stmt->execute();
 		$db = null;
@@ -118,9 +122,9 @@ function findByName($query) {
 
 function getConnection() {
 	$dbhost="127.0.0.1";
-	$dbuser="admin";
-	$dbpass="admin";
-	$dbname="cellar";
+	$dbuser="solwebco_reserva";
+	$dbpass="TPsKz!)IG*Fo";
+	$dbname="solwebco_reservas";
 	$dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);	
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	return $dbh;

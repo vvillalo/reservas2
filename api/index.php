@@ -10,6 +10,8 @@ $app->get('/reservations/search/:query', 'findByName');
 $app->post('/reservations', 'addReservation');
 $app->put('/reservations/:id', 'updateReservation');
 $app->delete('/reservations/:id',   'deleteReservation');
+$app->get('/reservations/:idLogin',	'getReservationByUser');
+$app->get('/reservations',	'getAvailability');
 
 $app->run();
 
@@ -26,6 +28,20 @@ function getReservations() {
 	}
 }
 
+function getReservationByUser($idLogin) {
+	$sql = "SELECT * FROM reservation WHERE idLogin=:idLogin";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
+		$stmt->bindParam("idLogin", $idLogin);
+		$stmt->execute();
+		$reservations = $stmt->fetchAll(PDO::FETCH_OBJ);  
+		$db = null;
+		echo '{"reservation": ' . json_encode($reservations) . '}'; 
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
 function getReservation($id) {
 	$sql = "SELECT * FROM reservation WHERE id=:id";
 	try {
@@ -91,6 +107,27 @@ function updateReservation($id) {
 	}
 }
 
+function getAvailability() {
+	$request = Slim::getInstance()->request();
+	$body = $request->getBody();
+	$reservation = json_decode($body);
+	$sql = "Select count (id) from reservation WHERE idField=:idField and hour=:hour and day=:day and month=:month and year=:year";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
+                $stmt->bindParam("idField", $reservation->idField);
+		$stmt->bindParam("hour", $reservation->hour);
+		$stmt->bindParam("day", $reservation->day);
+		$stmt->bindParam("month", $reservation->month);
+		$stmt->bindParam("year", $reservation->year);
+		$stmt->execute();
+		$db = null;
+		echo json_encode($reservation); 
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
 function deleteReservation($id) {
 	$sql = "DELETE FROM reservation WHERE id=:id";
 	try {
@@ -119,6 +156,7 @@ function findByName($query) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}
 }
+ 
 
 function getConnection() {
 	$dbhost="127.0.0.1";

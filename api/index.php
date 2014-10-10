@@ -10,8 +10,8 @@ $app->get('/reservations/search/:query', 'findByName');
 $app->post('/reservations', 'addReservation');
 $app->put('/reservations/:id', 'updateReservation');
 $app->delete('/reservations/:id',   'deleteReservation');
-$app->get('/reservations/:idLogin',	'getReservationByUser');
-$app->get('/reservations',	'getAvailability');
+$app->get('/reservations/byuser/:idLogin',	'getReservationByUser');
+$app->get('/reservations/availability',	'getAvailability');
 
 $app->run();
 

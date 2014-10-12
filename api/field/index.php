@@ -113,9 +113,9 @@ function findByName($query) {
 		$query = "%".$query."%";  
 		$stmt->bindParam("query", $query);
 		$stmt->execute();
-		$field = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$fields = $stmt->fetchAll(PDO::FETCH_OBJ);
 		$db = null;
-		echo '{"Field": ' . json_encode($field) . '}';
+		echo '{"field": ' . json_encode($fields) . '}';
 	} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}

@@ -149,9 +149,9 @@ function findByName($query) {
 		$query = "%".$query."%";  
 		$stmt->bindParam("query", $query);
 		$stmt->execute();
-		$reservation = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$reservations = $stmt->fetchAll(PDO::FETCH_OBJ);
 		$db = null;
-		echo '{"Reservation": ' . json_encode($reservation) . '}';
+		echo '{"reservation": ' . json_encode($reservations) . '}';
 	} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}

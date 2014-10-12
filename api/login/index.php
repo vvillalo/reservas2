@@ -101,9 +101,9 @@ function findByName($query) {
 		$query = "%".$query."%";  
 		$stmt->bindParam("query", $query);
 		$stmt->execute();
-		$login = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$logins = $stmt->fetchAll(PDO::FETCH_OBJ);
 		$db = null;
-		echo '{"login": ' . json_encode($login) . '}';
+		echo '{"login": ' . json_encode($logins) . '}';
 	} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
 	}

@@ -150,7 +150,7 @@ function renderList(data) {
 
 	$('#loginList li').remove();
 	$.each(list, function(index, login) {
-		$('#loginList').append('<li><a href="#" data-identity="' + login.id + '">'+login.name+'</a></li>');
+		$('#loginList').append('<li><a href="#" data-identity="' + login.id + '">'+login.user+'</a></li>');
 	});
 }
 

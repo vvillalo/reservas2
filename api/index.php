@@ -12,6 +12,7 @@ $app->put('/reservations/:id', 'updateReservation');
 $app->delete('/reservations/:id',   'deleteReservation');
 $app->get('/reservations/byuser/:idLogin',	'getReservationByUser');
 $app->get('/reservations/availability',	'getAvailability');
+$app->get('/reservations/fieldsavailability',	'getFieldsAvailability');
 
 $app->run();
 
@@ -116,6 +117,26 @@ function getAvailability() {
 		$db = getConnection();
 		$stmt = $db->prepare($sql);  
                 $stmt->bindParam("idField", $reservation->idField);
+		$stmt->bindParam("hour", $reservation->hour);
+		$stmt->bindParam("day", $reservation->day);
+		$stmt->bindParam("month", $reservation->month);
+		$stmt->bindParam("year", $reservation->year);
+		$stmt->execute();
+		$db = null;
+		echo json_encode($reservation); 
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
+function getFieldsAvailability() {
+	$request = Slim::getInstance()->request();
+	$body = $request->getBody();
+	$reservation = json_decode($body);
+	$sql = "Select id from field WHERE id not in (select idField from reservation where hour=:hour and day=:day and month=:month and year=:year)";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);  
 		$stmt->bindParam("hour", $reservation->hour);
 		$stmt->bindParam("day", $reservation->day);
 		$stmt->bindParam("month", $reservation->month);

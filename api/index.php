@@ -13,6 +13,9 @@ $app->delete('/reservations/:id',   'deleteReservation');
 $app->get('/reservations/byuser/:idLogin',	'getReservationByUser');
 $app->get('/reservations/availability',	'getAvailability');
 $app->get('/reservations/fieldsavailability',	'getFieldsAvailability');
+$app->get('/reservations/fieldsavailability/:query',	'getFieldsAvailability2');
+$app->get('/reservations/add/:query',	'addReservation2');
+
 
 $app->run();
 
@@ -178,15 +181,177 @@ function findByName($query) {
 	}
 }
  
+ function getFieldsAvailability2($query) {
+
+	$utils=new utilsReserva();
+	$tok = $utils->stringSeparator($query, "-");
+	
+	$hour="";
+	$day="";
+	$month="";
+	$year="";
+	
+	if($tok !== false)
+	{
+		$hour=$tok;
+	}
+	$tok = strtok("-");
+	if($tok !== false)
+	{
+		$day=$tok;
+	}
+	$tok = strtok("-");
+	if($tok !== false)
+	{
+		$month=$tok;
+	}
+	$tok = strtok("-");
+	if($tok !== false)
+	{
+		$year=$tok;
+	}
+	
+	
+	$sql = "Select id from field WHERE id not in (select idField from reservation where hour=:hour and day=:day and month=:month and year=:year)";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);
+		$stmt->bindParam("hour", $hour);
+		$stmt->bindParam("day", $day);
+		$stmt->bindParam("month", $month);
+		$stmt->bindParam("year", $year);
+		$stmt->execute();
+		$reservations = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+		echo '{"reservation": ' . json_encode($reservations) . '}';
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
+function addReservation2($query) {
+        $utils=new utilsReserva();
+	$tok = $utils->stringSeparator($query, "-");
+	
+	$name="";
+        $hour="";
+	$day="";
+	$month="";
+	$year="";
+        $description="";
+        $idField="";
+        $idLogin="";
+	
+	if($tok !== false)
+	{
+		$name=$tok;
+	}
+	$tok = strtok("-");
+        if($tok !== false)
+	{
+		$hour=$tok;
+	}
+	$tok = strtok("-");
+	if($tok !== false)
+	{
+		$day=$tok;
+	}
+	$tok = strtok("-");
+	if($tok !== false)
+	{
+		$month=$tok;
+	}
+	$tok = strtok("-");
+	if($tok !== false)
+	{
+		$year=$tok;
+	}
+        $tok = strtok("-");
+	if($tok !== false)
+	{
+		$description=$tok;
+	}
+        $tok = strtok("-");
+	if($tok !== false)
+	{
+		$idField=$tok;
+                settype($idField, "integer");
+	}
+        $tok = strtok("-");
+	if($tok !== false)
+	{
+		$idLogin=$tok;
+                settype($idLogin, "integer");
+	}
+        
+	$sql = "INSERT INTO reservation (name, hour, day, month, year, description, idField, idLogin) VALUES (:name, :hour, :day, :month, :year, :description, :idField, :idLogin)";
+	try {
+		$db = getConnection();
+		$stmt = $db->prepare($sql);
+                $stmt->bindParam("name", $name);
+		$stmt->bindParam("hour", $hour);
+		$stmt->bindParam("day", $day);
+		$stmt->bindParam("month", $month);
+		$stmt->bindParam("year", $year);
+                $stmt->bindParam("description", $description);
+                $stmt->bindParam("idField", $idField);
+                $stmt->bindParam("idLogin", $idLogin);
+		$stmt->execute();
+//		$reservations = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+		echo 'Exitoso';
+	} catch(PDOException $e) {
+		echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+	}
+}
+
 
 function getConnection() {
+        $utils=new utilsReserva();
+    
 	$dbhost="127.0.0.1";
 	$dbuser="solwebco_reserva";
 	$dbpass="TPsKz!)IG*Fo";
 	$dbname="solwebco_reservas";
-	$dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);	
-	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	return $dbh;
+        if($utils->conexionValida($dbhost, $dbuser, $dbpass))
+        {
+            
+            $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);	
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            return $dbh;
+        }
+	
 }
 
+class utilsReserva
+{
+    /**
+     * @assert ("ab-cd", "-") == "ab"
+     * @assert ("abc/def", "/") == "abc"
+     * @assert ("ted<plus", "<") == "ted"
+     */
+    public function stringSeparator($a,$b)
+    {
+        $tok = strtok($a, $b);
+        return $tok;
+    }
+    
+    /**
+     * @assert ("192.185.12.105", "solwebco_reserva","TPsKz!)IG*Fo") == true
+     */
+    public function conexionValida($ip,$username,$password)
+    {
+        // Create connection
+        $conn = new mysqli($ip, $username, $password);
+
+        // Check connection
+        if ($conn->connect_error) {
+            return false;
+        } 
+        else
+            {return true;}
+
+    }
+    
+}
 ?>

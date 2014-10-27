@@ -65,14 +65,14 @@
   </apply>
  </target>
 
- <target name="phploc"
-         description="Measure project size using PHPLOC and print human readable output. Intended for usage on the command line.">
-  <exec executable="${toolsdir}phploc">
-   <arg value="--count-tests" />
-   <arg path="${basedir}/." />
-   <arg path="${basedir}/test" />
-  </exec>
- </target>
+<target name="phploc">
+    <exec executable="cmd">
+        <arg line="/c phploc
+            --log-csv '${basedir}/build/logs/phploc.csv'
+            --exclude '${basedir}/lib/Zend'
+            application lib" />
+    </exec>
+</target>
 
  <target name="phploc-ci"
          depends="prepare"

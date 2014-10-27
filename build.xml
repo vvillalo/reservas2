@@ -8,8 +8,6 @@
 <mkdir dir="${basedir}/build/code-browser"/>
 <mkdir dir="${basedir}/build/coverage"/>
 <mkdir dir="${basedir}/build/logs"/>
-<mkdir dir="${basedir}/build/pdepend"/>
-<mkdir dir="${basedir}/build/phpcb"/>
 </target>
 <!--
  Run the pdepend, phpmd, phpcpd, phpcs, phpdoc and phploc tasks in parallel
@@ -17,14 +15,9 @@
 -->
 <target name="parallelTasks">
 <parallel threadCount="1">
-<sequential>
-<antcall target="pdepend"/>
-<antcall target="phpmd"/>
-</sequential>
 <antcall target="phpcpd"/>
 <antcall target="phploc"/>
 <antcall target="phpcs"/>
-<antcall target="phpcb"/>
 </parallel>
 </target>
 <!--  Generate pmd-cpd.xml  -->

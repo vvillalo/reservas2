@@ -77,7 +77,7 @@
  </target>
 
  <target name="phpcs-ci" depends="prepare" description="Find coding standard violations using PHP_CodeSniffer and log result in XML format">
-  <exec executable="${basedir}/build/tools/phpcs.bat" output="/dev/null">
+  <exec executable="${basedir}/build/tools/phpcs.bat">
    <arg value="--report=checkstyle" />
    <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
    <arg value="--standard=PSR2" />

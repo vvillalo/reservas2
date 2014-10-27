@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -8,10 +9,8 @@
 /**
  * @author villalobos
  */
-
-// DO NOT REMOVE "%INCLUDE_PATH%" FROM TEMPLATE!
 // TODO: check include path
-ini_set('include_path', ini_get('include_path')%INCLUDE_PATH%);
+//ini_set('include_path', ini_get('include_path'));
 
 // put your code here
 ?>

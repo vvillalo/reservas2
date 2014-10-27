@@ -108,8 +108,8 @@
   </exec>
  </target>
 
- <target name="phpdox" depends="phploc-ci,phpcs-ci,phpmd-ci" description="Generate API documentation using phpDox">
+ <!--<target name="phpdox" depends="phploc-ci,phpcs-ci,phpmd-ci" description="Generate API documentation using phpDox">
   <exec executable="${basedir}/build/tools/phpdox.bat" dir="${basedir}/build"/>
- </target>
+ </target>-->
 </project>
 

@@ -7,7 +7,7 @@
        
   <testsuites>
     <testsuite name="reservas">
-      <directory suffix="indexTest.php">../test/api</directory>
+      <file>../test/api/indexTest.php</file>
     </testsuite>
   </testsuites>
 

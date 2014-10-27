@@ -20,7 +20,7 @@
  </target>
 
  <target name="phploc" description="Measure project size using PHPLOC">
-  <exec executable="${basedir}/build/tools/phploc.phar">
+  <exec executable="${basedir}/build/tools/phploc.bat">
    <arg value="--count-tests" />
    <arg path="${basedir}/api" />
    <arg path="${basedir}/test" />
@@ -28,7 +28,7 @@
  </target>
 
  <target name="phploc-ci" depends="prepare" description="Measure project size using PHPLOC and log result in CSV and XML format">
-  <exec executable="${basedir}/build/tools/phploc.phar">
+  <exec executable="${basedir}/build/tools/phploc.bat">
    <arg value="--count-tests" />
    <arg value="--log-csv" />
    <arg path="${basedir}/build/logs/phploc.csv" />

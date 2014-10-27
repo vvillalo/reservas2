@@ -52,14 +52,14 @@
 <target name="build" depends="clean,parallelTasks"/>
 
 
-<target name="phpunit" depends="prepare" description="Run unit tests with PHPUnit">
+<target name="phpunit">
   <exec executable="${basedir}/build/tools/phpunit.phar" failonerror="true">
    <arg value="--configuration"/>
    <arg path="${basedir}/build/phpunit.xml"/>
   </exec>
  </target>
  
-  <target name="phpdox" depends="phploc-ci,phpcs-ci,phpmd-ci" description="Generate API documentation using phpDox">
+  <target name="phpdox">
   <exec executable="${basedir}/build/tools/phpdox.phar" dir="${basedir}/build"/>
  </target>
 </project>

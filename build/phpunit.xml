@@ -5,8 +5,8 @@
          strict="true"
          verbose="true">
   <testsuites>
-    <testsuite name="Money">
-      <directory suffix="Test.php">../tests</directory>
+    <testsuite name="Reservas">
+      <directory suffix="indexTest.php">../test/api</directory>
     </testsuite>
   </testsuites>
 
